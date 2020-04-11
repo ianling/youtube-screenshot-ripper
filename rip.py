@@ -29,6 +29,7 @@ arg_parser = ArgumentParser()
 arg_parser.add_argument('urls', nargs='+')
 arg_parser.add_argument('-f', '--format', default='248')  # 248 == 1080p, no audio
 arg_parser.add_argument('-s', '--split-length', type=int, default=60)
+arg_parser.add_argument('-o', '--output-format', default='jpg')
 args = arg_parser.parse_args()
 
 videos = [get_video_info(url) for url in args.urls]
@@ -38,5 +39,5 @@ for video in videos:
     duration = get_duration(url)
     timestamps = range(duration, 0, -(args.split_length))
     for timestamp in timestamps:
-        stream = ffmpeg.input(url, ss=timestamp).output(f'{video_id}_{timestamp}.png', vframes=1)
+        stream = ffmpeg.input(url, ss=timestamp).output(f'{video_id}_{timestamp}.{args.output_format}', vframes=1)
         stream.run_async()
