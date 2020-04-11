@@ -37,7 +37,6 @@ for video in videos:
     video_id = video['id']
     duration = get_duration(url)
     timestamps = range(duration, 0, -(args.split_length))
-    print(timestamps)
     for timestamp in timestamps:
         stream = ffmpeg.input(url, ss=timestamp).output(f'{video_id}_{timestamp}.png', vframes=1)
         stream.run_async()
